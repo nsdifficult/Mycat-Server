@@ -9,6 +9,25 @@
 	under the License. -->
 <!DOCTYPE mycat:rule SYSTEM "rule.dtd">
 <mycat:rule xmlns:mycat="http://org.opencloudb/">
+	<tableRule name="auto-sharding-long">
+		<rule>
+			<columns>MPID</columns>
+			<algorithm>rang-long</algorithm>
+		</rule>
+	</tableRule>
+	<tableRule name="sharding-by-month-MS">
+		<rule>
+			<columns>visitTime</columns>
+			<algorithm>sharding-by-month-MS</algorithm>
+		</rule>
+	</tableRule>
+	
+	<tableRule name="sharding-by-mpId">
+		<rule>
+			<columns>mpId</columns>
+			<algorithm>partition-by-mpId</algorithm>
+		</rule>
+	</tableRule>
 	<tableRule name="rule1">
 		<rule>
 			<columns>id</columns>
@@ -29,12 +48,12 @@
 			<algorithm>hash-int</algorithm>
 		</rule>
 	</tableRule>
-	<tableRule name="auto-sharding-long">
+	<!-- <tableRule name="auto-sharding-long">
 		<rule>
 			<columns>id</columns>
 			<algorithm>rang-long</algorithm>
 		</rule>
-	</tableRule>
+	</tableRule> -->
 	<tableRule name="mod-long">
 		<rule>
 			<columns>id</columns>
@@ -116,5 +135,13 @@
 	
 	<function name="jump-consistent-hash" class="org.opencloudb.route.function.PartitionByJumpConsistentHash">
 		<property name="totalBuckets">3</property>
+	</function>
+	
+	<function name="sharding-by-month-MS"
+		class="org.opencloudb.route.function.PartitionByMonthMSDate">
+		<property name="dateFormat">yyyy-MM-dd</property>
+		<property name="sBeginDate">2015-04-01</property>
+	</function>
+	<function name="partition-by-mpId" class="org.opencloudb.route.function.PartitionByMpId">
 	</function>
 </mycat:rule>
